@@ -45,7 +45,7 @@ class Cache implements CacheInterface
     public function set($key, $value, $ttl = null)
     {
         $this->checkValidKey([$key]);
-        return $this->driver->set((string)$key, $value, $ttl);
+        return $this->driver->save((string)$key, $value, $ttl);
     }
 
     /**
@@ -62,7 +62,7 @@ class Cache implements CacheInterface
      */
     public function clear()
     {
-        return $this->driver->clear();
+        return $this->driver->clearCache();
     }
 
     /**
@@ -78,6 +78,8 @@ class Cache implements CacheInterface
      */
     public function setMultiple($values, $ttl = null)
     {
+        $this->checkValidKey(array_keys($values));
+        return $this->driver->saveMulti((array)$values);
     }
 
     /**
