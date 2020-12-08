@@ -17,6 +17,9 @@ class FileCache extends Driver
      */
     private string $path;
 
+    /**
+     * @throws CacheException
+     */
     protected function init(): void
     {
         $this->path = $this->getOption('path', '/tmp/cache');
@@ -27,6 +30,7 @@ class FileCache extends Driver
      * @param string $key
      * @param mixed|null $default
      * @return mixed|null
+     * @throws CacheException
      */
     public function get(string $key, $default = null)
     {
@@ -45,10 +49,17 @@ class FileCache extends Driver
     }
 
 
-    public function save(string $key, $value, $ttl = null)
+    /**
+     * @param string $key
+     * @param $value
+     * @param null $ttl
+     * @return bool
+     * @throws CacheException
+     */
+    public function save(string $key, $value, $ttl = null): bool
     {
         $ttl ??= 31536000;
-        $filename = $this->getFilePath($key, true);
+        $filename = $this->getFilePath($key);
 
         //var_dump($filename, $ttl);
 
@@ -79,15 +90,16 @@ class FileCache extends Driver
 
     /**
      * @param string $key
+     * @return bool
+     * @throws CacheException
      */
-    public function delete(string $key)
+    public function delete(string $key): bool
     {
         $filename = $this->getFilePath($key, false);
-        if(file_exists($filename)){
+        if (file_exists($filename)) {
             return unlink($filename);
         }
         return false;
-
     }
 
     /**
@@ -95,13 +107,19 @@ class FileCache extends Driver
      *
      * @return bool True on success and false on failure.
      */
-    public function clearCache()
+    public function clearCache(): bool
     {
-        // TODO: Implement clear() method.
+        return true;
     }
 
 
-    public function getMulti(array $keys, $default = null)
+    /**
+     * @param array $keys
+     * @param null $default
+     * @return array
+     * @throws CacheException
+     */
+    public function getMulti(array $keys, $default = null): array
     {
         $result = [];
         foreach ($keys as $key) {
@@ -111,7 +129,13 @@ class FileCache extends Driver
         return $result;
     }
 
-    public function saveMulti(array $values, $ttl = null)
+    /**
+     * @param array $values
+     * @param null $ttl
+     * @return bool
+     * @throws CacheException
+     */
+    public function saveMulti(array $values, $ttl = null): bool
     {
         $result = true;
         $good_keys = [];
@@ -132,7 +156,12 @@ class FileCache extends Driver
     }
 
 
-    public function deleteMulti(array $keys)
+    /**
+     * @param array $keys
+     * @return bool
+     * @throws CacheException
+     */
+    public function deleteMulti(array $keys): bool
     {
         $result = [];
         foreach ($keys as $key) {
@@ -141,7 +170,12 @@ class FileCache extends Driver
         return !in_array(false, $result);
     }
 
-    public function has($key)
+    /**
+     * @param $key
+     * @return bool
+     * @throws CacheException
+     */
+    public function has($key): bool
     {
         $filename = $this->getFilePath($key, false);
         return file_exists($filename);
@@ -149,21 +183,26 @@ class FileCache extends Driver
 
     /**
      * @param string $path
-     * @param int $permissons
-     * @param bool $recurcive
-     * @return string
-     * @throws \Exception
+     * @param int $permissions
+     * @return void
+     * @throws CacheException
      */
-    private function makeDir(string $path, int $permissons = 0777): void
+    private function makeDir(string $path, int $permissions = 0777): void
     {
         if (!is_dir($path)) {
-            if (mkdir($path, $permissons, true) === false) {
+            if (mkdir($path, $permissions, true) === false) {
                 throw new CacheException(sprintf("Не удалось создать директорию: %s", $path));
             }
         }
     }
 
-    private function getFilePath(string $key, $makedir = true): string
+    /**
+     * @param string $key
+     * @param bool $mkdir
+     * @return string
+     * @throws CacheException
+     */
+    private function getFilePath(string $key, $mkdir = true): string
     {
         $filename = $this->getFileName($key);
         $path = $this->path . DIRECTORY_SEPARATOR;
@@ -173,7 +212,7 @@ class FileCache extends Driver
         }
 
         // var_dump($path);
-        if ($makedir === true) {
+        if ($mkdir === true) {
             $this->makeDir($path);
         }
 
