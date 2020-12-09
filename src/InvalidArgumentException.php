@@ -3,9 +3,7 @@
 namespace Enjoys\SimpleCache;
 
 
-class InvalidArgumentException
-    extends CacheException
-    implements \Psr\SimpleCache\InvalidArgumentException
+class InvalidArgumentException extends CacheException implements \Psr\SimpleCache\InvalidArgumentException
 {
 
 }

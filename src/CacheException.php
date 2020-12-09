@@ -3,7 +3,9 @@
 namespace Enjoys\SimpleCache;
 
 
-class CacheException extends \Exception implements \Psr\SimpleCache\CacheException
+use Exception;
+
+class CacheException extends Exception implements \Psr\SimpleCache\CacheException
 {
 
 }

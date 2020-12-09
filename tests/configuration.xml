@@ -17,11 +17,8 @@ and open the template in the editor.
 <phpunit 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     bootstrap="../vendor/autoload.php" 
-    colors="true"  
-    convertErrorsToExceptions="true" 
-    convertNoticesToExceptions="true" 
-    convertWarningsToExceptions="true" 
-    stopOnFailure="true" 
+    colors="true"
+    stopOnFailure="true"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd">
     <coverage processUncoveredFiles="true">
         <include>

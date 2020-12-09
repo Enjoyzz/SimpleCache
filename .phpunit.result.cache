@@ -1,1 +1,0 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":310:{a:2:{s:7:"defects";a:2:{s:50:"Tests\Enjoys\SimpleCache\FileCacheTest::test_multi";i:3;s:57:"Tests\Enjoys\SimpleCache\FileCacheTest::test_multi_delete";i:3;}s:5:"times";a:2:{s:50:"Tests\Enjoys\SimpleCache\FileCacheTest::test_multi";d:0.219;s:57:"Tests\Enjoys\SimpleCache\FileCacheTest::test_multi_delete";d:0;}}}

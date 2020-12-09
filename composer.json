@@ -20,5 +20,10 @@
     "psr-4": {
       "Enjoys\\SimpleCache\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Enjoys\\SimpleCache\\": "tests/"
+    }
   }
 }
