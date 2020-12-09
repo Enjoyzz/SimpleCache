@@ -8,8 +8,15 @@ $cache = Cache::store(Cache::FILECACHE, []);
 
 
 //var_dump($cache->get('my_keydd', fn()=>$cache->set('my_keyd', 555)));
-var_dump($cache->get('my_dkseyd', new class() {
-    public function test(){
+var_dump($cache->get('my_dkseyd', new class($cache) {
+    public $cache;
+    public function __construct($cache)
+    {
+        $this->cache = $cache;
+    }
+
+    public function return(){
+        $this->cache->set('my_dkseyd', 4);
         return 4;
     }
 }));

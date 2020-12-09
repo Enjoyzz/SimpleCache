@@ -35,9 +35,14 @@ abstract class Cacher implements CacheInterface
      * @return mixed
      */
     protected function handlingDefaultValue($value){
-        var_dump($value);
+
+
         if($value instanceof \Closure){
             return $value();
+        }
+
+        if(is_object($value) && (new \ReflectionClass($value))->isAnonymous()){
+            return $value->return();
         }
 
         return $value;
