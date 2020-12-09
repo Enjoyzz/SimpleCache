@@ -43,19 +43,19 @@ class FileCache extends Cacher
         $key = $this->checkValidKey($key);
         $filename = $this->getFilePath($key, false);
         if (!file_exists($filename)) {
-            return $default;
+            return $this->handlingDefaultValue($default);
         }
 
         $filetime = @filemtime($filename);
 
         if ($filetime === false) {
             $this->delete($key);
-            return $default;
+            return $this->handlingDefaultValue($default);
         }
 
         if ($this->checkTtl($filetime) === false) {
             $this->delete($key);
-            return $default;
+            return $this->handlingDefaultValue($default);
         }
         return unserialize(file_get_contents($filename));
     }

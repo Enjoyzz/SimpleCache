@@ -30,4 +30,17 @@ abstract class Cacher implements CacheInterface
         return (string)$key;
     }
 
+    /**
+     * @param $value
+     * @return mixed
+     */
+    protected function handlingDefaultValue($value){
+        var_dump($value);
+        if($value instanceof \Closure){
+            return $value();
+        }
+
+        return $value;
+    }
+
 }
