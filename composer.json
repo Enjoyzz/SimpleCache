@@ -13,8 +13,7 @@
     "enjoys/traits": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5",
-    "vimeo/psalm": "^4.3"
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {
