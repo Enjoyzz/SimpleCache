@@ -2,3 +2,4 @@
 /example/_cache/
 /tests/.cache/
 !/tests/.cache/.gitkeep
+/.idea/
