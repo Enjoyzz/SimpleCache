@@ -7,6 +7,7 @@
           <settings>
             <list>
               <mapping local-root="$PROJECT_DIR$/.." remote-root="/var/www" />
+              <mapping local-root="$PROJECT_DIR$/.temp" remote-root="/opt/phpstorm-coverage" />
             </list>
           </settings>
         </remote-mappings>

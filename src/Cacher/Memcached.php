@@ -57,7 +57,7 @@ class Memcached extends Cacher
      */
     public function delete($key)
     {
-        $this->memcache->delete($key);
+        return $this->memcache->delete($key);
     }
 
     /**
@@ -65,7 +65,7 @@ class Memcached extends Cacher
      */
     public function clear()
     {
-        $this->memcache->flush();
+        return $this->memcache->flush();
     }
 
     /**

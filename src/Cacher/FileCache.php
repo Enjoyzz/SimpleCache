@@ -14,20 +14,32 @@ class FileCache extends Cacher
 
     private const DEFAULT_TTL = 31536000; // 1 year
 
+    private const UNDELETED_FILES = [
+        '.gitkeep',
+        '.gitignore',
+    ];
+
     /**
-     * @var mixed
+     * @var string
      */
     private string $path;
+    private int $gcProbability;
+
 
     /**
      * FileCache constructor.
      * @param array $options
+     *  path string /tmp/cache directory for the save cache files
+     *  gcProbability int 10 the probability (parts per million) that garbage collection (GC) should be performed
+     *      when storing a piece of data in the cache. Defaults to 10, meaning 0.001% chance.
+     *      This number should be between 0 and 1000000. A value 0 means no GC will be performed at all.
      * @throws CacheException
      */
     public function __construct(array $options = [])
     {
         parent::__construct($options);
-        $this->path = $this->getOption('path', '/tmp/cache');
+        $this->path = (string) $this->getOption('path', '/tmp/cache');
+        $this->gcProbability = (int) $this->getOption('gcProbability', 10);
         $this->makeDir($this->path);
     }
 
@@ -74,7 +86,7 @@ class FileCache extends Cacher
 
         $ttl = $this->getTTL($ttl);
 
-      // var_dump( $ttl);
+        // var_dump( $ttl);
 //        if ($ttl < time()) {
 //            $this->delete($key);
 //            return false;
@@ -120,7 +132,7 @@ class FileCache extends Cacher
      */
     public function clear(): bool
     {
-        $this->removeCacheFiles($this->path, true);
+        $this->removeCacheFiles();
         return true;
     }
 
@@ -270,34 +282,44 @@ class FileCache extends Cacher
     }
 
     /**
-     * @param null $path
-     * @param bool $full
+     * @param bool $gc Garbage Collector 
      */
-    private function removeCacheFiles($path = null, bool $full = false): void
+    private function removeCacheFiles(bool $gc = false): void
     {
-//        $path ??= $this->path;
-//
-//        if (($handle = opendir($path)) !== false) {
-//            while (false !== ($file = readdir($handle))) {
-//                if (strncmp($file, '.', 1) === 0) {
-//                    continue;
-//                }
-//                $fullPath = $path . DIRECTORY_SEPARATOR . $file;
-//                if (is_dir($fullPath)) {
-//                    $this->removeCacheFiles($fullPath, $full);
-//                    if (!$full && !@rmdir($fullPath)) {
-//                        $error = error_get_last()['message'];
-//                        throw new CacheException("Unable to remove directory '{$fullPath}': {$error['message']}");
-//                    }
-//                } elseif (!$full || ($full && @filemtime($fullPath) < time())) {
-//                    if (!@unlink($fullPath)) {
-//                        $error = error_get_last();
-//                        throw new CacheException("Unable to remove file '{$fullPath}': {$error['message']}");
-//                    }
-//                }
-//            }
-//            closedir($handle);
-//        }
+        $di = new \RecursiveDirectoryIterator($this->path, \FilesystemIterator::SKIP_DOTS);
+        $ri = new \RecursiveIteratorIterator($di, \RecursiveIteratorIterator::CHILD_FIRST);
+
+        /** @var \SplFileInfo $file */
+        foreach ($ri as $file) {
+            var_dump($file);
+            if (in_array($file->getFilename(), self::UNDELETED_FILES)) {
+                continue;
+            }
+            if ($gc) {
+                if ($file->isDir()) {
+                    continue;
+                }
+
+                $file->getMTime() > time() ?: unlink($file->getRealPath());
+            } else {
+                $file->isDir() ? rmdir($file->getRealPath()) : unlink($file->getRealPath());
+            }
+        }
+    }
+
+    /**
+     * @param int $gcProbability
+     */
+    public function setGcProbability(int $gcProbability): void
+    {
+        $this->gcProbability = $gcProbability;
+    }
+
+    private function gc()
+    {
+        if (\random_int(0, 1000000) < $this->gcProbability) {
+            $this->removeCacheFiles(true);
+        }
     }
 
 }

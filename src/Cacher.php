@@ -24,7 +24,7 @@ abstract class Cacher implements CacheInterface
      */
     protected function checkValidKey($key): string
     {
-        if (!\is_scalar($key) || \strpbrk((string)$key, '{}()/\@:')) {
+        if (!\is_scalar($key) || \strpbrk((string)$key, '{}()/\@:') || mb_strlen((string)$key) > 64) {
             throw new InvalidArgumentException('key string is not a legal value.');
         }
         return (string)$key;

@@ -51,7 +51,7 @@ class NullCacher extends Cacher
     {
         $result = [];
         foreach ($keys as $key) {
-            $result[$key] = $this->get($key, $default);
+            $result[(string)$key] = $this->get($key, $default);
         }
 
         return $result;

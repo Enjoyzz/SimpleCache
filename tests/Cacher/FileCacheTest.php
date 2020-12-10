@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Enjoys\SimpleCache\Cacher;
 
 
@@ -10,21 +11,38 @@ use PHPUnit\Framework\TestCase;
 class FileCacheTest extends TestCase
 {
 
+    private string $cache_path = __DIR__.'/../.cache';
+    private array $undeletedFiles = [
+        '.gitkeep',
+    ];
+
+    protected function tearDown(): void
+    {
+        $di = new \RecursiveDirectoryIterator($this->cache_path, \FilesystemIterator::SKIP_DOTS);
+        $ri = new \RecursiveIteratorIterator($di, \RecursiveIteratorIterator::CHILD_FIRST);
+
+        /** @var \SplFileInfo $file */
+        foreach ($ri as $file ) {
+            if(in_array($file->getFilename(), $this->undeletedFiles)) {
+                continue;
+            }
+            $file->isDir() ?  rmdir($file->getRealPath()) : unlink($file->getRealPath());
+        }
+    }
+
     public function data(): array
     {
         $obj = new \stdClass();
         $obj->field = 'test';
 
         return [
-            [1, 'int_key'],
-            [2.1, 'float_key'],
-            ['string', 'string_key'],
+            [1, 1],
+            [0.1, 0.1],
+            ['string', 'string'],
             ['object', $obj],
             ['boolean', true],
             ['null', null],
-            ['AZaz_.09', 'legalkey_chars'],
-            ['.0123456789qwertyuiopasdfghjklzxcvbnm.0123456789qwertyuiopasdfg', 'legalkey_chars_count64'],
-            ['array', [0 => 'mixed', 'array' => $obj, 'settting' => 2.1, 'bool' => false]],
+            ['array', [1, 2, 3]],
         ];
     }
 
@@ -38,7 +56,8 @@ class FileCacheTest extends TestCase
      */
     public function test_simplecache($key, $value)
     {
-        $cacher = new FileCache();
+        $cacher = new FileCache(['path' => $this->cache_path]);
+
 
         $cacher->set($key, $value);
 
@@ -49,29 +68,31 @@ class FileCacheTest extends TestCase
 
     public function test_with_ttl()
     {
-        $cacher = new FileCache();
-        $cacher->set('testkey', 'testvalue', 5);
-        $this->assertSame('testvalue', $cacher->get('testkey'));
-
-        sleep(4);
-        $this->assertSame('testvalue', $cacher->get('testkey'));
+        $cache_id = 'id';
+        $cache_value = 'val';
+        $cacher = new FileCache(['path' => $this->cache_path]);
+        $cacher->set($cache_id, $cache_value, 3);
+        $this->assertSame($cache_value, $cacher->get($cache_id));
 
         sleep(2);
-        $this->assertSame('clear', $cacher->get('testkey', 'clear'));
+        $this->assertSame($cache_value, $cacher->get($cache_id));
+
+        sleep(3);
+        $this->assertSame('clear', $cacher->get($cache_id, 'clear'));
     }
 
     public function test_delete()
     {
-        $cacher = new FileCache();
+        $cacher = new FileCache(['path' => $this->cache_path]);
         $cacher->set('cacheid', ['array']);
         $this->assertSame(['array'], $cacher->get('cacheid'));
         $cacher->delete('cacheid');
         $this->assertSame(null, $cacher->get('cacheid'));
     }
 
-    public function test_multi(): FileCache
+    public function test_multi()
     {
-        $cacher = new FileCache();
+        $cacher = new FileCache(['path' => $this->cache_path]);
         $cacher->setMultiple(
             [
                 'cacheid1' => 'val1',
@@ -96,15 +117,6 @@ class FileCacheTest extends TestCase
             )
         );
 
-        return $cacher;
-    }
-
-    /**
-     * @depends test_multi
-     * @param FileCache $cacher
-     */
-    public function test_multi_delete(FileCache $cacher)
-    {
         $this->assertSame(
             false,
             $cacher->deleteMultiple(
@@ -124,4 +136,6 @@ class FileCacheTest extends TestCase
             )
         );
     }
+
+
 }
