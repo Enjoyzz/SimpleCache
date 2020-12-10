@@ -41,10 +41,6 @@ abstract class Cacher implements CacheInterface
             return $value();
         }
 
-        if(is_object($value) && (new \ReflectionClass($value))->isAnonymous()){
-            return $value->return();
-        }
-
         return $value;
     }
 
