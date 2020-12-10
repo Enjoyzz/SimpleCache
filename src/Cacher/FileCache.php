@@ -43,11 +43,6 @@ class FileCache extends Cacher
         $this->makeDir($this->path);
     }
 
-    public static function getDefaultTTL()
-    {
-        return self::DEFAULT_TTL;
-    }
-
     /**
      * @inheritDoc
      * @param scalar $key

@@ -14,7 +14,7 @@ class FileCacheTest extends TestCase
 
     use Reflection;
 
-    private string $cache_path = __DIR__.'/../.cache';
+    private string $cache_path = __DIR__ . '/../.cache';
     private array $undeletedFiles = [
         '.gitkeep',
     ];
@@ -27,7 +27,7 @@ class FileCacheTest extends TestCase
     private function getInstance($options = [])
     {
         $this->tearDown();
-        if(empty($options)){
+        if (empty($options)) {
             $options = ['path' => $this->cache_path];
         }
         return new FileCache($options);
@@ -39,11 +39,11 @@ class FileCacheTest extends TestCase
         $ri = new \RecursiveIteratorIterator($di, \RecursiveIteratorIterator::CHILD_FIRST);
 
         /** @var \SplFileInfo $file */
-        foreach ($ri as $file ) {
-            if(in_array($file->getFilename(), $this->undeletedFiles)) {
+        foreach ($ri as $file) {
+            if (in_array($file->getFilename(), $this->undeletedFiles)) {
                 continue;
             }
-            $file->isDir() ?  rmdir($file->getRealPath()) : unlink($file->getRealPath());
+            $file->isDir() ? rmdir($file->getRealPath()) : unlink($file->getRealPath());
         }
     }
 
@@ -181,7 +181,7 @@ class FileCacheTest extends TestCase
     public function ttl()
     {
         return [
-            [null, FileCache::getDefaultTTL()],
+            [null, (new \ReflectionClass(FileCache::class))->getConstant('DEFAULT_TTL')],
             [-1, -1],
             [1, 1],
             [(new \DateInterval('P2Y4DT6H8M')), 63439680],
@@ -208,7 +208,7 @@ class FileCacheTest extends TestCase
     public function testHas()
     {
         $cacher = $this->getInstance();
-        $cacher->set(1,1);
+        $cacher->set(1, 1);
         $this->assertSame(true, $cacher->has(1));
         $this->assertSame(false, $cacher->has(2));
     }
@@ -216,9 +216,9 @@ class FileCacheTest extends TestCase
     public function testTtlNegative()
     {
         $cacher = $this->getInstance();
-        $cacher->set(1,1);
+        $cacher->set(1, 1);
         $this->assertSame(true, $cacher->has(1));
-        $cacher->set(1,1, -1);
+        $cacher->set(1, 1, -1);
         $this->assertSame(false, $cacher->has(1));
     }
 
@@ -231,11 +231,13 @@ class FileCacheTest extends TestCase
                 'cacheid1' => 'val1',
                 'cacheid2' => ['val2'],
                 'cacheid3' => 10,
-            ], -1
+            ],
+            -1
         );
         $this->assertSame(false, $cacher->has('cacheid1'));
         $this->assertSame(false, $cacher->has('cacheid2'));
         $this->assertSame(false, $cacher->has('cacheid3'));
     }
+
 
 }
