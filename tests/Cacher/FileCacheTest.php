@@ -1,11 +1,15 @@
 <?php
+/** @noinspection PhpMissingReturnTypeInspection */
+
+/** @noinspection PhpDocSignatureInspection */
+
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace Tests\Enjoys\SimpleCache\Cacher;
 
 
 use Enjoys\SimpleCache\CacheException;
 use Enjoys\SimpleCache\Cacher\FileCache;
-use Enjoys\SimpleCache\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Tests\Enjoys\SimpleCache\Reflection;
 
@@ -65,11 +69,6 @@ class FileCacheTest extends TestCase
 
     /**
      * @dataProvider data
-     * @param $key
-     * @param $value
-     * @throws CacheException
-     * @throws InvalidArgumentException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function test_simplecache($key, $value)
     {

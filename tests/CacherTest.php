@@ -1,4 +1,7 @@
 <?php
+/** @noinspection PhpMissingReturnTypeInspection */
+
+/** @noinspection PhpDocSignatureInspection */
 
 
 namespace Tests\Enjoys\SimpleCache;
@@ -49,6 +52,7 @@ class CacherTest extends TestCase
 
     /**
      * @dataProvider validkeys
+     * @throws \ReflectionException
      */
     public function testCheckValidKey_true($key, $expect)
     {
@@ -59,6 +63,7 @@ class CacherTest extends TestCase
 
     /**
      * @dataProvider invalidkeys
+     * @throws \ReflectionException
      */
     public function testCheckValidKey_invalid($key)
     {
@@ -83,6 +88,7 @@ class CacherTest extends TestCase
 
     /**
      * @dataProvider handledDefaultData
+     * @throws \ReflectionException
      */
     public function testHandlingDefaultValue($value, $expect)
     {

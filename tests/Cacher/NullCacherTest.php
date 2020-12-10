@@ -1,4 +1,7 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
+
+/** @noinspection PhpUnhandledExceptionInspection */
 
 
 namespace Tests\Enjoys\SimpleCache\Cacher;

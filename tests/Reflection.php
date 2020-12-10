@@ -9,12 +9,13 @@ trait Reflection
     /**
      * getPrivateMethod
      *
-     * @author	Joe Sexton <joe@webtipblog.com>
-     * @param 	string $className
-     * @param 	string $methodName
-     * @return	\ReflectionMethod
+     * @param string $className
+     * @param string $methodName
+     * @return    \ReflectionMethod
+     * @throws \ReflectionException
+     * @author    Joe Sexton <joe@webtipblog.com>
      */
-    public function getPrivateMethod($className, $methodName)
+    public function getPrivateMethod(string $className, string $methodName): \ReflectionMethod
     {
         $reflector = new \ReflectionClass($className);
         $method = $reflector->getMethod($methodName);
@@ -26,12 +27,13 @@ trait Reflection
     /**
      * getPrivateProperty
      *
-     * @author	Joe Sexton <joe@webtipblog.com>
-     * @param 	string $className
-     * @param 	string $propertyName
-     * @return	\ReflectionProperty
+     * @param string $className
+     * @param string $propertyName
+     * @return    \ReflectionProperty
+     * @throws \ReflectionException
+     * @author    Joe Sexton <joe@webtipblog.com>
      */
-    public function getPrivateProperty($className, $propertyName)
+    public function getPrivateProperty(string $className, string $propertyName): \ReflectionProperty
     {
         $reflector = new \ReflectionClass($className);
         $property = $reflector->getProperty($propertyName);
