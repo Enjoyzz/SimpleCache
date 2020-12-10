@@ -223,4 +223,19 @@ class FileCacheTest extends TestCase
     }
 
 
+    public function testSetMultiple()
+    {
+        $cacher = $this->getInstance();
+        $cacher->setMultiple(
+            [
+                'cacheid1' => 'val1',
+                'cacheid2' => ['val2'],
+                'cacheid3' => 10,
+            ], -1
+        );
+        $this->assertSame(false, $cacher->has('cacheid1'));
+        $this->assertSame(false, $cacher->has('cacheid2'));
+        $this->assertSame(false, $cacher->has('cacheid3'));
+    }
+
 }
