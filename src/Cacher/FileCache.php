@@ -82,6 +82,8 @@ class FileCache extends Cacher
      */
     public function set($key, $value, $ttl = null): bool
     {
+        $this->gc();
+
         $key = $this->checkValidKey($key);
 
         $ttl = $this->getTTL($ttl);
@@ -307,14 +309,10 @@ class FileCache extends Cacher
         }
     }
 
-    /**
-     * @param int $gcProbability
-     */
-    public function setGcProbability(int $gcProbability): void
-    {
-        $this->gcProbability = $gcProbability;
-    }
 
+    /**
+     * @throws \Exception
+     */
     private function gc()
     {
         if (\random_int(0, 1000000) < $this->gcProbability) {

@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d6e9a1c-a47f-4c50-9407-9d4d1ffde90d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/SimpleCache.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SimpleCache.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/example/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cacher/FileCache.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cacher/FileCache.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/.phpunit.result.cache" beforeDir="false" afterPath="$PROJECT_DIR$/tests/.phpunit.result.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607596369034</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="added tests">
+      <created>1607598754110</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1607598754110</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
