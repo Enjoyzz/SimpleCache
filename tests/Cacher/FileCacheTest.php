@@ -7,14 +7,31 @@ use Enjoys\SimpleCache\CacheException;
 use Enjoys\SimpleCache\Cacher\FileCache;
 use Enjoys\SimpleCache\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Tests\Enjoys\SimpleCache\Reflection;
 
 class FileCacheTest extends TestCase
 {
+
+    use Reflection;
 
     private string $cache_path = __DIR__.'/../.cache';
     private array $undeletedFiles = [
         '.gitkeep',
     ];
+
+    /**
+     * @param array $options
+     * @return FileCache
+     * @throws CacheException
+     */
+    private function getInstance($options = [])
+    {
+        $this->tearDown();
+        if(empty($options)){
+            $options = ['path' => $this->cache_path];
+        }
+        return new FileCache($options);
+    }
 
     protected function tearDown(): void
     {
@@ -56,7 +73,7 @@ class FileCacheTest extends TestCase
      */
     public function test_simplecache($key, $value)
     {
-        $cacher = new FileCache(['path' => $this->cache_path]);
+        $cacher = $this->getInstance();
 
 
         $cacher->set($key, $value);
@@ -83,7 +100,7 @@ class FileCacheTest extends TestCase
 
     public function test_delete()
     {
-        $cacher = new FileCache(['path' => $this->cache_path]);
+        $cacher = $this->getInstance();
         $cacher->set('cacheid', ['array']);
         $this->assertSame(['array'], $cacher->get('cacheid'));
         $cacher->delete('cacheid');
@@ -92,7 +109,7 @@ class FileCacheTest extends TestCase
 
     public function test_multi()
     {
-        $cacher = new FileCache(['path' => $this->cache_path]);
+        $cacher = $this->getInstance();
         $cacher->setMultiple(
             [
                 'cacheid1' => 'val1',
@@ -136,6 +153,58 @@ class FileCacheTest extends TestCase
             )
         );
     }
+
+
+    public function testGC()
+    {
+        $key = 1;
+        $cacher = $this->getInstance(['path' => $this->cache_path, 'gcProbability' => 1000000]);
+        $cacher->set($key, 1, 1);
+        $filename = $this->getPrivateMethod(FileCache::class, 'getFilePath')->invokeArgs($cacher, [$key, false]);
+        $this->assertFileExists($filename);
+        sleep(1);
+        $cacher->set(2, 1);
+        $this->assertFileDoesNotExist($filename);
+    }
+
+    public function testClear()
+    {
+        $key = uniqid('key');
+        $cacher = $this->getInstance();
+        $cacher->set($key, 1, 1);
+        $filename = $this->getPrivateMethod(FileCache::class, 'getFilePath')->invokeArgs($cacher, [$key, false]);
+        $this->assertFileExists($filename);
+        $cacher->clear();
+        $this->assertFileDoesNotExist($filename);
+    }
+
+    public function ttl()
+    {
+        return [
+            [null, FileCache::getDefaultTTL()],
+            [-1, -1],
+            [1, 1],
+            [(new \DateInterval('P2Y4DT6H8M')), 63439680],
+        ];
+    }
+
+    /**
+     * @dataProvider ttl
+     */
+    public function testGetTTL($ttl, $expect)
+    {
+        $cacher = $this->getInstance();
+        $getTTL = $this->getPrivateMethod(FileCache::class, 'getTTL');
+        $result = $getTTL->invokeArgs($cacher, [$ttl]);
+        $this->assertSame($expect, $result);
+    }
+
+    public function testInvalidMakeDir()
+    {
+        $this->expectException(CacheException::class);
+        $cacher = $this->getInstance(['path' => '/mycache']);
+    }
+
 
 
 }

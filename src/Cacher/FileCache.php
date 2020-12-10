@@ -38,9 +38,14 @@ class FileCache extends Cacher
     public function __construct(array $options = [])
     {
         parent::__construct($options);
-        $this->path = (string) $this->getOption('path', '/tmp/cache');
-        $this->gcProbability = (int) $this->getOption('gcProbability', 10);
+        $this->path = (string)$this->getOption('path', '/tmp/cache');
+        $this->gcProbability = (int)$this->getOption('gcProbability', 10);
         $this->makeDir($this->path);
+    }
+
+    public static function getDefaultTTL()
+    {
+        return self::DEFAULT_TTL;
     }
 
     /**
@@ -79,6 +84,7 @@ class FileCache extends Cacher
      * @param null|int|\DateInterval $ttl
      * @return bool
      * @throws CacheException|InvalidArgumentException
+     * @throws \Exception
      */
     public function set($key, $value, $ttl = null): bool
     {
@@ -89,10 +95,10 @@ class FileCache extends Cacher
         $ttl = $this->getTTL($ttl);
 
         // var_dump( $ttl);
-//        if ($ttl < time()) {
-//            $this->delete($key);
-//            return false;
-//        }
+        if ($ttl < 0) {
+            $this->delete($key);
+            return false;
+        }
 
         $filename = $this->getFilePath($key);
 
@@ -224,8 +230,9 @@ class FileCache extends Cacher
     private function makeDir(string $path, int $permissions = 0777): void
     {
         if (!is_dir($path)) {
-            if (mkdir($path, $permissions, true) === false) {
-                throw new CacheException(sprintf("Не удалось создать директорию: %s", $path));
+            if (@mkdir($path, $permissions, true) === false) {
+                $error = error_get_last();
+                throw new CacheException(sprintf("Не удалось создать директорию: %s! Причина: %s", $path, $error['message']));
             }
         }
     }
@@ -284,7 +291,7 @@ class FileCache extends Cacher
     }
 
     /**
-     * @param bool $gc Garbage Collector 
+     * @param bool $gc Garbage Collector
      */
     private function removeCacheFiles(bool $gc = false): void
     {
@@ -293,7 +300,6 @@ class FileCache extends Cacher
 
         /** @var \SplFileInfo $file */
         foreach ($ri as $file) {
-            var_dump($file);
             if (in_array($file->getFilename(), self::UNDELETED_FILES)) {
                 continue;
             }

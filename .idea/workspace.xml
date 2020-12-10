@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d6e9a1c-a47f-4c50-9407-9d4d1ffde90d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/Reflection.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cacher/FileCache.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cacher/FileCache.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/.phpunit.result.cache" beforeDir="false" afterPath="$PROJECT_DIR$/tests/.phpunit.result.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/CacherTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/CacherTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +112,7 @@
       <recent name="D:\_projects\SimpleCache\.idea" />
     </key>
   </component>
-  <component name="RunManager" selected="PHP Web Page.www">
+  <component name="RunManager" selected="PHPUnit.ALLTEST">
     <configuration name="ALLTEST" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <CommandLine>
         <PhpTestInterpreterSettings>
@@ -118,20 +122,20 @@
       <TestRunner configuration_file="$PROJECT_DIR$/tests/configuration.xml" scope="XML" use_alternative_configuration_file="true" />
       <method v="2" />
     </configuration>
-    <configuration name="CacherTest.testCheckValidKey_invalid" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Enjoys\SimpleCache\CacherTest" configuration_file="/var/www/SimpleCache/tests/configuration.xml" file="$PROJECT_DIR$/tests/CacherTest.php" method="testCheckValidKey_invalid" scope="Method" />
-      <method v="2" />
-    </configuration>
-    <configuration name="CacherTest.testCheckValidKey_true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Enjoys\SimpleCache\CacherTest" configuration_file="/var/www/SimpleCache/tests/configuration.xml" file="$PROJECT_DIR$/tests/CacherTest.php" method="testCheckValidKey_true" scope="Method" />
-      <method v="2" />
-    </configuration>
     <configuration name="FileCacheTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
       <TestRunner class="Tests\Enjoys\SimpleCache\Cacher\FileCacheTest" configuration_file="/var/www/SimpleCache/tests/configuration.xml" file="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" scope="Class" />
       <method v="2" />
     </configuration>
-    <configuration name="FileCacheTest.test_simplecache" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Enjoys\SimpleCache\Cacher\FileCacheTest" configuration_file="/var/www/SimpleCache/tests/configuration.xml" file="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" method="test_simplecache" scope="Method" />
+    <configuration name="FileCacheTest.testGC" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Enjoys\SimpleCache\Cacher\FileCacheTest" configuration_file="/var/www/SimpleCache/tests/configuration.xml" file="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" method="testGC" scope="Method" />
+      <method v="2" />
+    </configuration>
+    <configuration name="FileCacheTest.testGetTTL" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Enjoys\SimpleCache\Cacher\FileCacheTest" configuration_file="/var/www/SimpleCache/tests/configuration.xml" file="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" method="testGetTTL" scope="Method" />
+      <method v="2" />
+    </configuration>
+    <configuration name="FileCacheTest.testInvalidMakeDir" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Enjoys\SimpleCache\Cacher\FileCacheTest" configuration_file="/var/www/SimpleCache/tests/configuration.xml" file="$PROJECT_DIR$/tests/Cacher/FileCacheTest.php" method="testInvalidMakeDir" scope="Method" />
       <method v="2" />
     </configuration>
     <configuration name="FileCacheTest.test_with_ttl" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
@@ -147,19 +151,19 @@
     <list>
       <item itemvalue="PHP Web Page.www" />
       <item itemvalue="PHPUnit.ALLTEST" />
-      <item itemvalue="PHPUnit.CacherTest.testCheckValidKey_true" />
-      <item itemvalue="PHPUnit.CacherTest.testCheckValidKey_invalid" />
-      <item itemvalue="PHPUnit.FileCacheTest.test_simplecache" />
       <item itemvalue="PHPUnit.FileCacheTest.test_with_ttl" />
       <item itemvalue="PHPUnit.FileCacheTest" />
+      <item itemvalue="PHPUnit.FileCacheTest.testGC" />
+      <item itemvalue="PHPUnit.FileCacheTest.testGetTTL" />
+      <item itemvalue="PHPUnit.FileCacheTest.testInvalidMakeDir" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="PHPUnit.FileCacheTest.testInvalidMakeDir" />
+        <item itemvalue="PHPUnit.FileCacheTest.testGetTTL" />
+        <item itemvalue="PHPUnit.FileCacheTest.testGC" />
         <item itemvalue="PHPUnit.FileCacheTest" />
         <item itemvalue="PHPUnit.FileCacheTest.test_with_ttl" />
-        <item itemvalue="PHPUnit.FileCacheTest.test_simplecache" />
-        <item itemvalue="PHPUnit.CacherTest.testCheckValidKey_invalid" />
-        <item itemvalue="PHPUnit.CacherTest.testCheckValidKey_true" />
       </list>
     </recent_temporary>
   </component>
@@ -228,7 +232,21 @@
       <option name="project" value="LOCAL" />
       <updated>1607598754110</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add GC (Garbage Collector)">
+      <created>1607598861350</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1607598861350</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add GC (Garbage Collector)">
+      <created>1607598881695</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1607598881695</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,7 +268,8 @@
     <MESSAGE value="add handler default values" />
     <MESSAGE value="..." />
     <MESSAGE value="added tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="added tests" />
+    <MESSAGE value="add GC (Garbage Collector)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add GC (Garbage Collector)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -259,7 +278,8 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SimpleCache@phpunit.xml" NAME="phpunit Coverage Results" MODIFIED="1607442212594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/SimpleCache@CacherTest.xml" NAME="CacherTest Coverage Results" MODIFIED="1607589807637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/SimpleCache@ALLTEST.xml" NAME="ALLTEST Coverage Results" MODIFIED="1607596396301" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/SimpleCache@ALLTEST.xml" NAME="ALLTEST Coverage Results" MODIFIED="1607604002485" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/SimpleCache@FileCacheTest_testInvalidMakeDir.xml" NAME="FileCacheTest.testInvalidMakeDir Coverage Results" MODIFIED="1607603986843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/SimpleCache@all_tests.xml" NAME="all_tests Coverage Results" MODIFIED="1607495812302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

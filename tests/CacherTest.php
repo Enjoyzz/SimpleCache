@@ -11,6 +11,8 @@ use PHPUnit\Framework\TestCase;
 class CacherTest extends TestCase
 {
 
+    use Reflection;
+
     public function validkeys()
     {
         return [
@@ -90,20 +92,5 @@ class CacherTest extends TestCase
     }
 
 
-    /**
-     * getPrivateMethod
-     *
-     * @author	Joe Sexton <joe@webtipblog.com>
-     * @param 	string $className
-     * @param 	string $methodName
-     * @return	\ReflectionMethod
-     */
-    public function getPrivateMethod($className, $methodName)
-    {
-        $reflector = new \ReflectionClass($className);
-        $method = $reflector->getMethod($methodName);
-        $method->setAccessible(true);
 
-        return $method;
-    }
 }
