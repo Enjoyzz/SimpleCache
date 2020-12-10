@@ -202,9 +202,25 @@ class FileCacheTest extends TestCase
     public function testInvalidMakeDir()
     {
         $this->expectException(CacheException::class);
-        $cacher = $this->getInstance(['path' => '/mycache']);
+        $this->getInstance(['path' => '/mycache']);
     }
 
+    public function testHas()
+    {
+        $cacher = $this->getInstance();
+        $cacher->set(1,1);
+        $this->assertSame(true, $cacher->has(1));
+        $this->assertSame(false, $cacher->has(2));
+    }
+
+    public function testTtlNegative()
+    {
+        $cacher = $this->getInstance();
+        $cacher->set(1,1);
+        $this->assertSame(true, $cacher->has(1));
+        $cacher->set(1,1, -1);
+        $this->assertSame(false, $cacher->has(1));
+    }
 
 
 }
