@@ -3,3 +3,4 @@
 /tests/.cache/
 !/tests/.cache/.gitkeep
 /.idea/
+.phpunit.result.cache
