@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Enjoys\SimpleCache\Cacher;
 
 
+use Enjoys\SimpleCache\CacheException;
 use Enjoys\SimpleCache\Cacher;
 
 class Memcached extends Cacher
@@ -12,13 +13,27 @@ class Memcached extends Cacher
 
     private $memcacheFlags;
 
+    /**
+     * Memcached constructor.
+     * @param array $options
+     *  host string Point to the host where memcached is listening for connections
+     *  port int Point to the port where memcached is listening for connections
+     *  persistent bool Controls the use of a persistent connection. Default to <b>TRUE</b>
+     * @throws CacheException
+     */
     public function __construct(array $options = [])
     {
+        if(!class_exists('\Memcache')){
+            throw new CacheException('Memcached not installed');
+        }
+
         parent::__construct($options);
+
         $this->memcache = new \Memcache();
         $this->memcache->addServer(
             $this->getOption('host', 'localhost'),
-            $this->getOption('port', '11211')
+            $this->getOption('port', '11211'),
+            $this->getOption('persistent', true)
         );
 
         $this->memcacheFlags = $this->getOption('flags', null);
