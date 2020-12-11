@@ -90,7 +90,7 @@ class FileCache extends Cacher
         $ttl = $this->normalizeTtl($ttl);
 
         // var_dump( $ttl);
-        if ($ttl < 0) {
+        if ($ttl < time()) {
             $this->delete($key);
             return false;
         }
@@ -107,7 +107,7 @@ class FileCache extends Cacher
         fclose($f);
 
         //установка метки времени для сброса кэша
-        touch($filename, time() + $ttl);
+        touch($filename, $ttl);
 
         return true;
     }
@@ -273,17 +273,6 @@ class FileCache extends Cacher
         return md5($key);
     }
 
-    /**
-     * @param null|int|\DateInterval $ttl
-     * @return int
-     */
-    private function normalizeTtl($ttl): int
-    {
-        if ($ttl instanceof \DateInterval) {
-            return (new \DateTime('@0'))->add($ttl)->getTimestamp();
-        }
-        return $ttl ?? self::DEFAULT_TTL;
-    }
 
     /**
      * @param bool $gc Garbage Collector

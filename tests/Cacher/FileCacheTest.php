@@ -177,26 +177,6 @@ class FileCacheTest extends TestCase
         $this->assertFileDoesNotExist($filename);
     }
 
-    public function ttl()
-    {
-        return [
-            [null, (new \ReflectionClass(FileCache::class))->getConstant('DEFAULT_TTL')],
-            [-1, -1],
-            [1, 1],
-            [(new \DateInterval('P2Y4DT6H8M')), 63439680],
-        ];
-    }
-
-    /**
-     * @dataProvider ttl
-     */
-    public function testGetTTL($ttl, $expect)
-    {
-        $cacher = $this->getInstance();
-        $getTTL = $this->getPrivateMethod(FileCache::class, 'getTTL');
-        $result = $getTTL->invokeArgs($cacher, [$ttl]);
-        $this->assertSame($expect, $result);
-    }
 
     public function testInvalidMakeDir()
     {
