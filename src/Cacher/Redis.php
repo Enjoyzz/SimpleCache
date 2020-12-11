@@ -91,14 +91,6 @@ class Redis extends Cacher
         return $result;
     }
 
-    public function deleteMultiple($keys)
-    {
-        $result = [];
-        foreach ($keys as $key) {
-            $result[] = $this->delete($key);
-        }
-        return !in_array(false, $result);
-    }
 
     public function has($key)
     {

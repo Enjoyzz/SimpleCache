@@ -60,4 +60,19 @@ abstract class Cacher implements CacheInterface
         return $addedTime + ($ttl ?? self::DEFAULT_TTL);
     }
 
+    /**
+     * @param iterable $keys
+     * @return bool
+     * @throws CacheException
+     * @noinspection PhpMissingParamTypeInspection
+     */
+    public function deleteMultiple($keys): bool
+    {
+        $result = [];
+        foreach ($keys as $key) {
+            $result[] = $this->delete($key);
+        }
+        return !in_array(false, $result);
+    }
+
 }
