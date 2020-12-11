@@ -36,8 +36,6 @@ class Memcached extends Cacher
             $this->getOption('host', 'localhost'),
             $this->getOption('port', 11211)
         );
-
-
         //$this->getOption('persistent', true)
 
         $this->memcachedFlags = $this->getOption('flags', 0);
@@ -67,13 +65,11 @@ class Memcached extends Cacher
     {
         $key = $this->checkValidKey($key);
 
-        $ttl = $this->normalizeTtl($ttl);
-//
-//        if($this->has($key)){
-//            return $this->memcached->replace($key, $value, $ttl);
-//        }
-        var_dump($key, $value, $ttl);
-        return $this->memcached->set($key, $value, $ttl);
+        return $this->memcached->set(
+            $key,
+            $value,
+            $this->normalizeTtl($ttl)
+        );
     }
 
     /**
@@ -110,34 +106,12 @@ class Memcached extends Cacher
      */
     public function setMultiple($values, $ttl = null)
     {
-        $result = true;
-        $good_keys = [];
-        foreach ($values as $key => $value) {
-            if (!$this->set($key, $value, $ttl)) {
-                $result = false;
-                break;
-            }
-            $good_keys[] = $key;
-        }
-
-        if ($result === false) {
-            $this->deleteMultiple($good_keys);
-            return false;
-        }
-
-        return true;
+        $ttl = $this->normalizeTtl($ttl);
+        return $this->memcached->setMulti((array)$values, $ttl);
     }
 
     /**
-     * Deletes multiple cache items in a single operation.
-     *
-     * @param iterable $keys A list of string-based keys to be deleted.
-     *
-     * @return bool True if the items were successfully removed. False if there was an error.
-     *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if $keys is neither an array nor a Traversable,
-     *   or if any of the $keys are not a legal value.
+     * @inheritDoc
      */
     public function deleteMultiple($keys)
     {
@@ -154,7 +128,8 @@ class Memcached extends Cacher
     public function has($key)
     {
         $key = $this->checkValidKey($key);
-        if (false === $this->memcached->get($key, null, $this->memcachedFlags)) {
+        $this->memcached->get($key);
+        if ($this->memcached->getResultCode() === \Memcached::RES_NOTFOUND) {
             return false;
         }
         return true;
