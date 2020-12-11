@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Enjoys\SimpleCache\Cacher;
@@ -9,9 +10,9 @@ use Enjoys\SimpleCache\Cacher;
 
 class Memcached extends Cacher
 {
-    private \Memcache $memcache;
+    private \Memcached $memcached;
 
-    private $memcacheFlags;
+    private $memcachedFlags;
 
     /**
      * Memcached constructor.
@@ -23,20 +24,23 @@ class Memcached extends Cacher
      */
     public function __construct(array $options = [])
     {
-        if(!class_exists('\Memcache')){
+        //phpinfo();
+        if (!class_exists('\Memcached')) {
             throw new CacheException('Memcached not installed');
         }
 
         parent::__construct($options);
 
-        $this->memcache = new \Memcache();
-        $this->memcache->addServer(
+        $this->memcached = new \Memcached();
+        $this->memcached->addServer(
             $this->getOption('host', 'localhost'),
-            $this->getOption('port', '11211'),
-            $this->getOption('persistent', true)
+            $this->getOption('port', 11211)
         );
 
-        $this->memcacheFlags = $this->getOption('flags', null);
+
+        //$this->getOption('persistent', true)
+
+        $this->memcachedFlags = $this->getOption('flags', 0);
     }
 
     /**
@@ -45,12 +49,16 @@ class Memcached extends Cacher
     public function get($key, $default = null)
     {
         $key = $this->checkValidKey($key);
-        $result =  $this->memcache->get($key, $this->memcacheFlags);
-        if($result === false) {
+
+        $result = $this->memcached->get($key);
+
+        if ($this->memcached->getResultCode() === \Memcached::RES_NOTFOUND) {
             $result = $this->handlingDefaultValue($default);
         }
+
         return $result;
     }
+
 
     /**
      * @inheritDoc
@@ -59,11 +67,13 @@ class Memcached extends Cacher
     {
         $key = $this->checkValidKey($key);
 
-        if($this->has($key)){
-            return $this->memcache->replace($key, $value, $this->memcacheFlags, $ttl);
-        }
-
-        return $this->memcache->set($key, $value, $this->memcacheFlags, $ttl);
+        $ttl = $this->normalizeTtl($ttl);
+//
+//        if($this->has($key)){
+//            return $this->memcached->replace($key, $value, $ttl);
+//        }
+        var_dump($key, $value, $ttl);
+        return $this->memcached->set($key, $value, $ttl);
     }
 
     /**
@@ -71,7 +81,7 @@ class Memcached extends Cacher
      */
     public function delete($key)
     {
-        return $this->memcache->delete($key);
+        return $this->memcached->delete($key);
     }
 
     /**
@@ -79,7 +89,7 @@ class Memcached extends Cacher
      */
     public function clear()
     {
-        return $this->memcache->flush();
+        return $this->memcached->flush();
     }
 
     /**
@@ -144,7 +154,7 @@ class Memcached extends Cacher
     public function has($key)
     {
         $key = $this->checkValidKey($key);
-        if(false === $this->memcache->get($key, $this->memcacheFlags)){
+        if (false === $this->memcached->get($key, null, $this->memcachedFlags)) {
             return false;
         }
         return true;
