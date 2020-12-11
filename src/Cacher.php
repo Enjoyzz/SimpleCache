@@ -12,6 +12,8 @@ abstract class Cacher implements CacheInterface
 {
     use Options;
 
+    protected const DEFAULT_TTL = 31536000; // 1 year
+
     public function __construct(array $options = [])
     {
         $this->setOptions($options);
@@ -42,6 +44,18 @@ abstract class Cacher implements CacheInterface
         }
 
         return $value;
+    }
+
+    /**
+     * @param null|int|\DateInterval $ttl
+     * @return int
+     */
+    protected function getTTL($ttl): int
+    {
+        if ($ttl instanceof \DateInterval) {
+            return (new \DateTime('@0'))->add($ttl)->getTimestamp();
+        }
+        return $ttl ?? self::DEFAULT_TTL;
     }
 
 }

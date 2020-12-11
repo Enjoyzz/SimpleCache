@@ -12,7 +12,7 @@ use Enjoys\SimpleCache\InvalidArgumentException;
 class FileCache extends Cacher
 {
 
-    private const DEFAULT_TTL = 31536000; // 1 year
+
 
     private const UNDELETED_FILES = [
         '.gitkeep',
