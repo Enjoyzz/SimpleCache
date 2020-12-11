@@ -87,7 +87,7 @@ class FileCache extends Cacher
 
         $key = $this->checkValidKey($key);
 
-        $ttl = $this->getTTL($ttl);
+        $ttl = $this->normalizeTtl($ttl);
 
         // var_dump( $ttl);
         if ($ttl < 0) {
@@ -277,7 +277,7 @@ class FileCache extends Cacher
      * @param null|int|\DateInterval $ttl
      * @return int
      */
-    private function getTTL($ttl): int
+    private function normalizeTtl($ttl): int
     {
         if ($ttl instanceof \DateInterval) {
             return (new \DateTime('@0'))->add($ttl)->getTimestamp();

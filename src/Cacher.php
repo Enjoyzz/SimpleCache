@@ -50,7 +50,7 @@ abstract class Cacher implements CacheInterface
      * @param null|int|\DateInterval $ttl
      * @return int
      */
-    protected function getTTL($ttl): int
+    protected function normalizeTtl($ttl): int
     {
         if ($ttl instanceof \DateInterval) {
             return (new \DateTime('@0'))->add($ttl)->getTimestamp();
