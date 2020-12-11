@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
 
 
 namespace Enjoys\SimpleCache\Cacher;
@@ -10,10 +10,11 @@ use Enjoys\SimpleCache\Cacher;
 class Redis extends Cacher
 {
 
-    private $redis;
+    private \Redis $redis;
 
     /**
      * Redis constructor.
+     * @param array $options
      * @throws CacheException
      */
     public function __construct(array $options = [])

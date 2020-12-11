@@ -63,7 +63,7 @@ abstract class Cacher implements CacheInterface
     /**
      * @param iterable $keys
      * @return bool
-     * @throws CacheException
+     * @throws CacheException|InvalidArgumentException
      * @noinspection PhpMissingParamTypeInspection
      */
     public function deleteMultiple($keys)
