@@ -39,7 +39,23 @@ class Memcached extends Cacher
         );
         //$this->getOption('persistent', true)
 
+        if(!$this->checkConnection()){
+            throw new CacheException($this->memcached->getResultMessage());
+        }
+
         $this->memcachedFlags = $this->getOption('flags', 0);
+    }
+
+    /**
+     * @return bool
+     */
+    private function checkConnection(): bool
+    {
+        $this->memcached->get(uniqid('test_connection'));
+        return in_array($this->memcached->getResultCode(), [
+            \Memcached::RES_NOTFOUND,
+            \Memcached::RES_SUCCESS
+        ]);
     }
 
     /**
