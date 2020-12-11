@@ -66,7 +66,7 @@ abstract class Cacher implements CacheInterface
      * @throws CacheException
      * @noinspection PhpMissingParamTypeInspection
      */
-    public function deleteMultiple($keys): bool
+    public function deleteMultiple($keys)
     {
         $result = [];
         foreach ($keys as $key) {
