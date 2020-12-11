@@ -35,7 +35,8 @@ class CacherTest extends TestCase
         ];
     }
 
-    public function invalidkeys(){
+    public function invalidkeys()
+    {
         return [
             [':test'],
             ['/test'],
@@ -79,7 +80,12 @@ class CacherTest extends TestCase
         $obj->key = 'param';
 
         return [
-            [function(){return 'test';}, 'test'],
+            [
+                function () {
+                    return 'test';
+                },
+                'test'
+            ],
             [fn() => 'test', 'test'],
             ['test', 'test'],
             [$obj, $obj]
@@ -97,6 +103,25 @@ class CacherTest extends TestCase
         $this->assertSame($expect, $method->invokeArgs($mock, [$value]));
     }
 
+    public function ttl()
+    {
+        return [
+            [null, (new \ReflectionClass(Cacher::class))->getConstant('DEFAULT_TTL')],
+            [-1, -1],
+            [1, 1],
+            [(new \DateInterval('P2Y4DT6H8M')), 63439680],
+        ];
+    }
 
+    /**
+     * @dataProvider ttl
+     */
+    public function testNormalizeTtl($ttl, $expect)
+    {
+        $mock = $this->getMockForAbstractClass(Cacher::class);
+        $getTTL = $this->getPrivateMethod(Cacher::class, 'normalizeTtl');
+        $result = $getTTL->invokeArgs($mock, [$ttl, 0]);
+        $this->assertSame($expect, $result);
+    }
 
 }

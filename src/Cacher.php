@@ -48,14 +48,16 @@ abstract class Cacher implements CacheInterface
 
     /**
      * @param null|int|\DateInterval $ttl
+     * @param int|null $addedTime
      * @return int
      */
-    protected function normalizeTtl($ttl): int
+    protected function normalizeTtl($ttl, ?int $addedTime = null): int
     {
         if ($ttl instanceof \DateInterval) {
             return (new \DateTime('@0'))->add($ttl)->getTimestamp();
         }
-        return $ttl ?? self::DEFAULT_TTL;
+        $addedTime ??= time();
+        return $addedTime + ($ttl ?? self::DEFAULT_TTL);
     }
 
 }
