@@ -9,12 +9,12 @@ use Psr\SimpleCache\CacheInterface;
 trait CacherTrait
 {
 
-    protected ?CacheInterface $cacher = null;
+    protected CacheInterface $cacher;
 
     /**
-     * @param CacheInterface|null $cacher
+     * @param CacheInterface $cacher
      */
-    public function setCacher(?CacheInterface $cacher): void
+    public function setCacher(CacheInterface $cacher): void
     {
         $this->cacher = $cacher;
     }
