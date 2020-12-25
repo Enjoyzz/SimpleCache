@@ -8,6 +8,7 @@ namespace Enjoys\SimpleCache\Cacher;
 
 use Enjoys\SimpleCache\CacheException;
 use Enjoys\SimpleCache\Cacher;
+use Enjoys\SimpleCache\InvalidArgumentException;
 
 class Memcached extends Cacher
 {
@@ -60,6 +61,8 @@ class Memcached extends Cacher
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
     public function get($key, $default = null)
     {
@@ -77,6 +80,8 @@ class Memcached extends Cacher
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
     public function set($key, $value, $ttl = null)
     {
@@ -141,6 +146,8 @@ class Memcached extends Cacher
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
     public function has($key)
     {

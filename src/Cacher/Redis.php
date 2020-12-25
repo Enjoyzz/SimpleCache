@@ -6,6 +6,7 @@ namespace Enjoys\SimpleCache\Cacher;
 
 use Enjoys\SimpleCache\CacheException;
 use Enjoys\SimpleCache\Cacher;
+use Enjoys\SimpleCache\InvalidArgumentException;
 
 class Redis extends Cacher
 {
@@ -33,6 +34,9 @@ class Redis extends Cacher
     }
 
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function get($key, $default = null)
     {
         $key = $this->checkValidKey($key);
@@ -43,6 +47,9 @@ class Redis extends Cacher
         return $result;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function set($key, $value, $ttl = null)
     {
         $ttl = $this->normalizeTtl($ttl, 0);
@@ -58,6 +65,7 @@ class Redis extends Cacher
 
     /**
      * @inheritDoc
+     * @throws InvalidArgumentException
      */
     public function delete($key)
     {
@@ -92,7 +100,10 @@ class Redis extends Cacher
         return $result;
     }
 
-
+    /**
+     * @inheritDoc
+     * @throws InvalidArgumentException
+     */
     public function has($key)
     {
         return (bool) $this->redis->exists($key);

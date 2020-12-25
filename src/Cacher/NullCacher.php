@@ -4,13 +4,17 @@
 namespace Enjoys\SimpleCache\Cacher;
 
 
+use Enjoys\SimpleCache\CacheException;
 use Enjoys\SimpleCache\Cacher;
+use Enjoys\SimpleCache\InvalidArgumentException;
 
 class NullCacher extends Cacher
 {
 
     /**
      * @inheritDoc
+     * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function get($key, $default = null)
     {
@@ -20,6 +24,8 @@ class NullCacher extends Cacher
 
     /**
      * @inheritDoc
+     * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function set($key, $value, $ttl = null)
     {
@@ -29,6 +35,8 @@ class NullCacher extends Cacher
 
     /**
      * @inheritDoc
+     * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function delete($key)
     {
@@ -46,6 +54,8 @@ class NullCacher extends Cacher
 
     /**
      * @inheritDoc
+     * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function getMultiple($keys, $default = null)
     {
@@ -75,6 +85,8 @@ class NullCacher extends Cacher
 
     /**
      * @inheritDoc
+     * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function has($key)
     {

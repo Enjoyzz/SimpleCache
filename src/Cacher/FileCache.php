@@ -45,10 +45,8 @@ class FileCache extends Cacher
 
     /**
      * @inheritDoc
-     * @param scalar $key
-     * @param mixed|null $default
-     * @return mixed|null
-     * @throws CacheException|InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function get($key, $default = null)
     {
@@ -74,12 +72,9 @@ class FileCache extends Cacher
 
 
     /**
-     * @param scalar $key
-     * @param mixed $value
-     * @param null|int|\DateInterval $ttl
-     * @return bool
-     * @throws CacheException|InvalidArgumentException
-     * @throws \Exception
+     * @inheritDoc
+     * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function set($key, $value, $ttl = null): bool
     {
@@ -114,8 +109,8 @@ class FileCache extends Cacher
 
 
     /**
-     * @param scalar $key
-     * @return bool
+     * @inheritDoc
+     * @throws InvalidArgumentException
      * @throws CacheException
      */
     public function delete($key): bool
@@ -141,12 +136,9 @@ class FileCache extends Cacher
 
 
     /**
-     * @param iterable $keys
-     * @param mixed|null $default
-     * @return array
-     * @throws CacheException
+     * @inheritDoc
      * @throws InvalidArgumentException
-     * @noinspection PhpMissingParamTypeInspection
+     * @throws CacheException
      */
     public function getMultiple($keys, $default = null): array
     {
@@ -160,12 +152,8 @@ class FileCache extends Cacher
 
     /**
      * @inheritDoc
-     * @param iterable $values
-     * @param null|int|\DateInterval $ttl
-     * @return bool
-     * @throws CacheException
      * @throws InvalidArgumentException
-     * @noinspection PhpMissingParamTypeInspection
+     * @throws CacheException
      */
     public function setMultiple($values, $ttl = null): bool
     {
@@ -188,10 +176,9 @@ class FileCache extends Cacher
     }
 
     /**
-     * @param scalar $key
-     * @return bool
-     * @throws CacheException
+     * @inheritDoc
      * @throws InvalidArgumentException
+     * @throws CacheException
      */
     public function has($key): bool
     {
