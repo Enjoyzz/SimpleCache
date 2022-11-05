@@ -118,7 +118,7 @@ class FileCache extends Cacher
         $key = $this->checkValidKey($key);
         $filename = $this->getFilePath($key, false);
         if (file_exists($filename)) {
-            return unlink($filename);
+            return @unlink($filename);
         }
         return false;
     }
